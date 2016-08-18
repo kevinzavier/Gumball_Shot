@@ -16,6 +16,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
     public static final int MOVESPEED = 0;
     private MainThread thread;
     private Background bg;
+    private Player ball;
 
     public GamePanel(Context context){
         super(context);
@@ -48,16 +49,30 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
     public void surfaceCreated(SurfaceHolder holder){
        //start the thread
         bg = new Background(BitmapFactory.decodeResource(getResources(), R.drawable.blue));
+        ball = new Player(BitmapFactory.decodeResource(getResources(), R.drawable.redball), 300, 300, 1);
 
         thread.setRunning(true);
         thread.start();
     }
     @Override
     public boolean onTouchEvent(MotionEvent event){
+        if(event.getAction()==MotionEvent.ACTION_DOWN){
+            if(!ball.getPlaying()){
+                ball.setPlaying(true);
+            }
+            else{
+                ball.setUp(true);
+            }
+            return true;
+        }
+        if(event.getAction()==MotionEvent.ACTION_UP){
+            ball.setUp(false);
+            return true;
+        }
         return super.onTouchEvent(event);
     }
 
-    public void update(){
+    public void update() {
         bg.update();
     }
 
@@ -70,6 +85,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
             final int savedState = canvas.save();
             canvas.scale(scaleFactorX, scaleFactorY);
             bg.draw(canvas);
+            ball.draw(canvas);
             canvas.restoreToCount(savedState);
         }
     }
