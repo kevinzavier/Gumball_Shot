@@ -11,8 +11,9 @@ import android.view.SurfaceView;
  * Created by kevin on 8/17/16.
  */
 public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
-    public static final int WIDTH = 1920;
-    public static final int HEIGHT = 1080;
+    public static final int WIDTH = 259;
+    public static final int HEIGHT = 194;
+    public static final int MOVESPEED = 0;
     private MainThread thread;
     private Background bg;
 
@@ -46,8 +47,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
     @Override
     public void surfaceCreated(SurfaceHolder holder){
        //start the thread
-        bg = new Background(BitmapFactory.decodeResource(getResources(), R.drawable.green));
-        //bg.setVector(-5);
+        bg = new Background(BitmapFactory.decodeResource(getResources(), R.drawable.blue));
+
         thread.setRunning(true);
         thread.start();
     }
@@ -62,8 +63,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
 
     @Override
     public void draw(Canvas canvas){
-        final float scaleFactorX = getWidth()/WIDTH;
-        final float scaleFactorY = getWidth()/HEIGHT;
+        final float scaleFactorX = getWidth()/(WIDTH *1.f);
+        final float scaleFactorY = getHeight()/(HEIGHT*1.f);
         super.draw(canvas);
         if(canvas!=null) {
             final int savedState = canvas.save();
