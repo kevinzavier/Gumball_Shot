@@ -24,9 +24,9 @@ public class Player extends  GameObject {
         width = w;
         numFrames = 0;
         image = res;
-        x = 100;
+        x = 150;
         y = GamePanel.height/2 - height/2;
-        resized = Bitmap.createScaledBitmap(image, 100, 100, true);
+        resized = Bitmap.createScaledBitmap(image, 200, 200, true);
 
 
 
@@ -60,7 +60,7 @@ public class Player extends  GameObject {
         if(playing) {
             long elapsed = (System.nanoTime() - startTime) / 1000000;
             if (up) {
-                dy = (int) (dya -= 1.1);
+                dy = (int) (dya-= 1.1);
             } else {
                 dy = (int) (dya += 1.1);
             }

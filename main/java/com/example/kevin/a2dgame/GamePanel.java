@@ -19,6 +19,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
     private MainThread thread;
     private Background bg;
     private Player ball;
+    private Goal dot;
     public static int width;
     public static int height;
 
@@ -49,13 +50,16 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
     @Override
     public void surfaceDestroyed(SurfaceHolder holder){
         boolean retry = true;
-        while(retry){
+        int counter = 0;
+        while(retry && counter<1000){
+            counter++;
             try{
                 thread.setRunning(false);
                 thread.join();
+                retry = false;
 
             }catch(InterruptedException e){e.printStackTrace();}
-            retry = false;
+
         }
     }
     @Override
@@ -63,6 +67,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
        //start the thread
         bg = new Background(BitmapFactory.decodeResource(getResources(), R.drawable.blue));
         ball = new Player(BitmapFactory.decodeResource(getResources(), R.drawable.redball), 100, 100, 1);
+        dot = new Goal(BitmapFactory.decodeResource(getResources(), R.drawable.goldcoin), 100, 100, 1);
 
         thread.setRunning(true);
         thread.start();
@@ -102,6 +107,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
             bg.resize(width, height);
             bg.draw(canvas);
             ball.draw(canvas);
+            dot.draw(canvas);
             canvas.restoreToCount(savedState);
         }
     }
