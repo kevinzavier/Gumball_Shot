@@ -22,9 +22,14 @@ public class Background {
     }
     public void draw(Canvas canvas){
         canvas.drawBitmap(image, x, y, null);
+        /*
         if(x<0){
-            canvas.drawBitmap(image, x+=GamePanel.WIDTH, y, null);
+            canvas.drawBitmap(image, x+=GamePanel.width, y, null);
         }
+        */
+    }
+    public void resize(int width, int height){
+        image = Bitmap.createScaledBitmap(image, width, height, true);
     }
 
 

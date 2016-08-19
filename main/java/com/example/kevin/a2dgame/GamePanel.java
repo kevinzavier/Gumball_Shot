@@ -15,14 +15,12 @@ import android.view.WindowManager;
  * Created by kevin on 8/17/16.
  */
 public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
-    public static final int WIDTH = 259;
-    public static final int HEIGHT = 194;
     public static final int MOVESPEED = 0;
     private MainThread thread;
     private Background bg;
     private Player ball;
-    private int width;
-    private int height;
+    public static int width;
+    public static int height;
 
     public GamePanel(Context context){
         super(context);
@@ -64,7 +62,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
     public void surfaceCreated(SurfaceHolder holder){
        //start the thread
         bg = new Background(BitmapFactory.decodeResource(getResources(), R.drawable.blue));
-        ball = new Player(BitmapFactory.decodeResource(getResources(), R.drawable.redball), 5, 5, 1);
+        ball = new Player(BitmapFactory.decodeResource(getResources(), R.drawable.redball), 100, 100, 1);
 
         thread.setRunning(true);
         thread.start();
@@ -73,11 +71,9 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
     public boolean onTouchEvent(MotionEvent event){
         if(event.getAction()==MotionEvent.ACTION_DOWN){
             if(!ball.getPlaying()){
-                Log.i("", "WTF IS GOING ON");
                 ball.setPlaying(true);
             }
             else{
-                Log.i("", "WTF IS GOING ON");
                 ball.setUp(true);
 
             }
@@ -97,12 +93,13 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
 
     @Override
     public void draw(Canvas canvas){
-        final float scaleFactorX = width/(WIDTH);
-        final float scaleFactorY = height/(HEIGHT);
+        //final float scaleFactorX = width/(WIDTH);
+        //final float scaleFactorY = height/(HEIGHT);
         super.draw(canvas);
         if(canvas!=null) {
             final int savedState = canvas.save();
             //canvas.scale(scaleFactorX, scaleFactorY);
+            bg.resize(width, height);
             bg.draw(canvas);
             ball.draw(canvas);
             canvas.restoreToCount(savedState);

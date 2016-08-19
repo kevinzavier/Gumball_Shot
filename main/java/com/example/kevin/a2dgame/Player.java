@@ -9,6 +9,7 @@ import android.view.animation.Animation;
  */
 public class Player extends  GameObject {
     private Bitmap image;
+    private Bitmap resized;
     private int score;
     private double dya;
     private boolean up;
@@ -17,14 +18,15 @@ public class Player extends  GameObject {
     private long startTime;
 
     public Player(Bitmap res, int w, int h, int numFrames){
-        x = 100;
-        y = GamePanel.HEIGHT/2;
         dy = 0;
         score = 0;
         height = h;
         width = w;
         numFrames = 0;
         image = res;
+        x = 100;
+        y = GamePanel.height/2 - height/2;
+        resized = Bitmap.createScaledBitmap(image, 100, 100, true);
 
 
 
@@ -32,7 +34,7 @@ public class Player extends  GameObject {
     }
 
     public void draw(Canvas canvas){
-        canvas.drawBitmap(image, x, y, null);
+        canvas.drawBitmap(resized, x, y, null);
     }
     public int getScore(){
         return score;
@@ -55,22 +57,23 @@ public class Player extends  GameObject {
     }
 
     public void update(){
-        long elapsed = (System.nanoTime() - startTime)/1000000;
-        if(up){
-            dy = (int)(dya-=1.1);
-        }
-        else{
-            dy = (int)(dya+=1.1);
-        }
-        if(dy > 14){
-            dy = 14;
-        }
-        if(dy<-14){
-            dy = -14;
-        }
+        if(playing) {
+            long elapsed = (System.nanoTime() - startTime) / 1000000;
+            if (up) {
+                dy = (int) (dya -= 1.1);
+            } else {
+                dy = (int) (dya += 1.1);
+            }
+            if (dy > 14) {
+                dy = 14;
+            }
+            if (dy < -14) {
+                dy = -14;
+            }
 
-        y+= dy*2;
-        dy = 0;
+            y += dy * 2;
+            dy = 0;
+        }
 
 
     }
