@@ -12,7 +12,7 @@ public class Player extends  GameObject {
     private int score;
     private double dya;
     private boolean up;
-    private boolean playing;
+    private boolean playing = false;
     //private Animation animation = new Animation();
     private long startTime;
 
@@ -24,7 +24,7 @@ public class Player extends  GameObject {
         height = h;
         width = w;
         numFrames = 0;
-        //R.drawable.redball = res;
+        image = res;
 
 
 

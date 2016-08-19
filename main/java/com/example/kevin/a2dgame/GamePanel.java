@@ -3,9 +3,13 @@ package com.example.kevin.a2dgame;
 import android.content.Context;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Point;
+import android.util.Log;
+import android.view.Display;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.WindowManager;
 
 /**
  * Created by kevin on 8/17/16.
@@ -17,6 +21,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
     private MainThread thread;
     private Background bg;
     private Player ball;
+    private int width;
+    private int height;
 
     public GamePanel(Context context){
         super(context);
@@ -28,6 +34,15 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
 
         //make GamePanel focusable so it can handle events
         setFocusable(true);
+
+
+        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        Display display = wm.getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        width = size.x;
+        height = size.y;
+
     }
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height){
@@ -49,7 +64,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
     public void surfaceCreated(SurfaceHolder holder){
        //start the thread
         bg = new Background(BitmapFactory.decodeResource(getResources(), R.drawable.blue));
-        ball = new Player(BitmapFactory.decodeResource(getResources(), R.drawable.redball), 300, 300, 1);
+        ball = new Player(BitmapFactory.decodeResource(getResources(), R.drawable.redball), 5, 5, 1);
 
         thread.setRunning(true);
         thread.start();
@@ -58,10 +73,13 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
     public boolean onTouchEvent(MotionEvent event){
         if(event.getAction()==MotionEvent.ACTION_DOWN){
             if(!ball.getPlaying()){
+                Log.i("", "WTF IS GOING ON");
                 ball.setPlaying(true);
             }
             else{
+                Log.i("", "WTF IS GOING ON");
                 ball.setUp(true);
+
             }
             return true;
         }
@@ -74,16 +92,17 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
 
     public void update() {
         bg.update();
+        ball.update();
     }
 
     @Override
     public void draw(Canvas canvas){
-        final float scaleFactorX = getWidth()/(WIDTH *1.f);
-        final float scaleFactorY = getHeight()/(HEIGHT*1.f);
+        final float scaleFactorX = width/(WIDTH);
+        final float scaleFactorY = height/(HEIGHT);
         super.draw(canvas);
         if(canvas!=null) {
             final int savedState = canvas.save();
-            canvas.scale(scaleFactorX, scaleFactorY);
+            //canvas.scale(scaleFactorX, scaleFactorY);
             bg.draw(canvas);
             ball.draw(canvas);
             canvas.restoreToCount(savedState);
