@@ -20,7 +20,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     private MainThread thread;
     private Background bg;
     private Player ball;
-    private Goal dot;
+    private Goal goal;
+    private Dot dot;
     public static int width;
     public static int height;
     float x = -1;
@@ -29,6 +30,9 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     private float lasty;
     public static float eventX;
     public static float eventY;
+    private boolean touched;
+    private boolean valid;
+
 
     public GamePanel(Context context){
         super(context);
@@ -74,7 +78,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
        //start the thread
         bg = new Background(BitmapFactory.decodeResource(getResources(), R.drawable.blue));
         ball = new Player(BitmapFactory.decodeResource(getResources(), R.drawable.redball), 100, 100, 1);
-        dot = new Goal(BitmapFactory.decodeResource(getResources(), R.drawable.goldcoin), 100, 100, 1);
+        goal = new Goal(BitmapFactory.decodeResource(getResources(), R.drawable.goldcoin), 100, 100, 1);
+        dot = new Dot(BitmapFactory.decodeResource(getResources(), R.drawable.blackdot), 100, 100, 1);
 
         thread.setRunning(true);
         thread.start();
@@ -83,6 +88,11 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     public boolean onTouchEvent(MotionEvent event){
 
         if(event.getAction()==MotionEvent.ACTION_DOWN){
+
+            if(ball.contains(event.getX(), event.getY())){
+                Log.i("", "YESSSSSSSSSSSSSSSSSSSSSSSSSSS");
+                touched = true;
+            }
             //x= event.getX();
             //y = event.getY();
             //ball.setTouched(true);
@@ -102,10 +112,18 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
             */
 
         }
-        if(event.getAction()==MotionEvent.ACTION_MOVE){
+        if(event.getAction()==MotionEvent.ACTION_MOVE && touched){
             x= event.getX();
             y = event.getY();
 
+
+
+        }
+        if(event.getAction()==MotionEvent.ACTION_UP){
+            touched = false;
+            if(touched && valid){
+
+            }
         }
         /*
         if(event.getAction()==MotionEvent.ACTION_UP){
@@ -138,6 +156,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
             bg.resize(width, height);
             bg.draw(canvas);
             ball.draw(canvas);
+            goal.draw(canvas);
             dot.draw(canvas);
             canvas.restoreToCount(savedState);
         }

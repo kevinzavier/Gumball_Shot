@@ -28,7 +28,7 @@ public class Player extends  GameObject {
         width = w;
         numFrames = 0;
         image = res;
-        x = 150;
+        x = 200;
         y = GamePanel.height/2 - height/2;
         resized = Bitmap.createScaledBitmap(image, 200, 200, true);
 
@@ -37,11 +37,9 @@ public class Player extends  GameObject {
 
     }
     public boolean contains(float xx, float yy){
-        if(xx> x + 100 || xx < x - 100  || yy > y + 100 || yy < y - 100){
-            Log.i("", "NOPE");
+        if(xx> x + 100 + 100 || xx < x + 100 - 100  || yy > y + 100 + 100 || yy < y + 100 - 100){
             return false;
         }
-        Log.i("", "yes");
         return true;
     }
 
