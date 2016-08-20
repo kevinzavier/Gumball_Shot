@@ -18,6 +18,8 @@ public class Player extends  GameObject {
     private boolean playing = false;
     private float lastx;
     private float lasty;
+    private int initX;
+    private int initY;
     //private Animation animation = new Animation();
     private long startTime;
 
@@ -28,8 +30,10 @@ public class Player extends  GameObject {
         width = w;
         numFrames = 0;
         image = res;
-        x = 200;
+        x = 250;
         y = GamePanel.height/2 - height/2;
+        initX = x;
+        initY = y;
         resized = Bitmap.createScaledBitmap(image, 200, 200, true);
 
 
@@ -74,6 +78,9 @@ public class Player extends  GameObject {
     public void setTouched(boolean b){
         touched = b;
     }
+    public boolean getTouched(){
+        return touched;
+    }
     public void resetDya(){
         dya = 0;
     }
@@ -86,10 +93,19 @@ public class Player extends  GameObject {
     }
 
     public void update(){
-        if(playing) {
+
+        if(touched) {
+            int deltx = getX() - initX;
+            int delty = getY() - initY;
+            Log.i("XXXXXXXXXXXXXXXXXXX", String.valueOf(deltx));
+            Log.i("YYYYYYYYYYYYYYYYYYY", String.valueOf(delty));
+            dy += .6;
+            y += dy * 2;
+            //dy = 0;
+
             long elapsed = (System.nanoTime() - startTime) / 1000000;
             if (up) {
-                dy = (int) (dya-= 1.1);
+                dy = (int) (dya-= .6);
             } else {
                 dy = (int) (dya += 1.1);
             }
@@ -100,15 +116,9 @@ public class Player extends  GameObject {
                 dy = -14;
             }
 
-            y += dy * 2;
-            dy = 0;
-        }
-        if(touched){
-            //move((int)(GamePanel.eventX - lastx), (int)(GamePanel.eventY- lasty)); //move in just one
 
-            //lastx = x;
-            //lasty = y;
         }
+
 
 
     }

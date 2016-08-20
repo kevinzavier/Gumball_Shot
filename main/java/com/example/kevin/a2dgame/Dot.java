@@ -20,7 +20,7 @@ public class Dot extends GameObject{
         width = w;
         numFrames = 0;
         image = res;
-        x = 275;
+        x = 325;
         y = GamePanel.height/2 - height + 100 + 25;
         resized = Bitmap.createScaledBitmap(image, 50, 50, true);
     }
