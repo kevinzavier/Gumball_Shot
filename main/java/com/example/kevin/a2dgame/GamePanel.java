@@ -9,12 +9,13 @@ import android.view.Display;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.View;
 import android.view.WindowManager;
 
 /**
  * Created by kevin on 8/17/16.
  */
-public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
+public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     public static final int MOVESPEED = 0;
     private MainThread thread;
     private Background bg;
@@ -22,6 +23,12 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
     private Goal dot;
     public static int width;
     public static int height;
+    float x = -1;
+    float y = -1;
+    private float lastx;
+    private float lasty;
+    public static float eventX;
+    public static float eventY;
 
     public GamePanel(Context context){
         super(context);
@@ -74,27 +81,49 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
     }
     @Override
     public boolean onTouchEvent(MotionEvent event){
+
         if(event.getAction()==MotionEvent.ACTION_DOWN){
+            x= event.getX();
+            y = event.getY();
+            //ball.setTouched(true);
+            Log.i("", "WE ARE GOOOOOOOOOOOOOD");
+            //ball.move((int)(event.getX() - lastx), (int)(event.getY() - lasty)); //move in just one
+
+            //lastx = x;
+            //lasty = y;
+            /*
             if(!ball.getPlaying()){
-                ball.setPlaying(true);
+                //ball.setPlaying(true);
             }
             else{
                 ball.setUp(true);
 
             }
-            return true;
+            */
+
         }
+        if(event.getAction()==MotionEvent.ACTION_MOVE){
+            Log.i("", String.valueOf(event.getX()));
+            Log.i("", String.valueOf(event.getY()));
+        }
+        /*
         if(event.getAction()==MotionEvent.ACTION_UP){
-            ball.setUp(false);
+            //ball.setUp(false);
             return true;
         }
+        */
         return super.onTouchEvent(event);
     }
 
     public void update() {
         bg.update();
         ball.update();
+        if(x > 0 && y > 0) {
+            ball.setImage((int) x, (int) y);
+        }
+
     }
+
 
     @Override
     public void draw(Canvas canvas){
