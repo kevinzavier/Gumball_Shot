@@ -83,10 +83,10 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     public boolean onTouchEvent(MotionEvent event){
 
         if(event.getAction()==MotionEvent.ACTION_DOWN){
-            x= event.getX();
-            y = event.getY();
+            //x= event.getX();
+            //y = event.getY();
             //ball.setTouched(true);
-            Log.i("", "WE ARE GOOOOOOOOOOOOOD");
+
             //ball.move((int)(event.getX() - lastx), (int)(event.getY() - lasty)); //move in just one
 
             //lastx = x;
@@ -103,8 +103,9 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 
         }
         if(event.getAction()==MotionEvent.ACTION_MOVE){
-            Log.i("", String.valueOf(event.getX()));
-            Log.i("", String.valueOf(event.getY()));
+            x= event.getX();
+            y = event.getY();
+
         }
         /*
         if(event.getAction()==MotionEvent.ACTION_UP){
@@ -112,7 +113,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
             return true;
         }
         */
-        return super.onTouchEvent(event);
+        return true;
+        //return super.onTouchEvent(event);
     }
 
     public void update() {
