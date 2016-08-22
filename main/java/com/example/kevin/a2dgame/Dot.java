@@ -27,4 +27,5 @@ public class Dot extends GameObject{
     public void draw(Canvas canvas){
         canvas.drawBitmap(resized, x, y, null);
     }
+
 }
