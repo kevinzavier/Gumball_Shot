@@ -83,8 +83,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         bg = new Background(BitmapFactory.decodeResource(getResources(), R.drawable.blue));
         ball = new Player(BitmapFactory.decodeResource(getResources(), R.drawable.redball), 200, 200, 1);
         goals = new ArrayList<Goal>();
-        goals.add(new Goal(GamePanel.width - 300, GamePanel.height/2 - height));
-
+        goals.add(new Goal(GamePanel.width - 500, GamePanel.height/2));
+        //goals.add(new Goal(800,300));
         dot = new Dot(BitmapFactory.decodeResource(getResources(), R.drawable.blackdot), 100, 100, 1);
 
         thread.setRunning(true);
@@ -149,6 +149,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         bg.update();
         //updates the ball
         ball.update();
+
         //this is so that we can only drag the ball once
         if(x > 0 && y > 0 && !ball.getTouched()) {
             ball.setImage((int) x, (int) y);

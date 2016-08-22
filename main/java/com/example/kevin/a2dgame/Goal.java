@@ -17,7 +17,7 @@ public class Goal extends GameObject{
     private boolean up;
     private boolean playing = false;
     public Goal(int x,int y){
-        r = 40;
+        r = 35;
         this.x = x;
         this.y = y;
         dy = 0;
@@ -32,9 +32,9 @@ public class Goal extends GameObject{
         Paint paint = new Paint();
         paint.setColor(Color.GRAY);
         paint.setStyle(Paint.Style.FILL);
-        canvas.drawCircle(x -r - 4, y- -r - 4, r + 4, paint);
+        canvas.drawCircle(x -r , y-r, r + 15, paint);
         paint.setColor(Color.BLACK);
-        canvas.drawCircle(x -r, y -r, r, paint);
+        canvas.drawCircle(x -r, y-r, r, paint);
 
     }
 
