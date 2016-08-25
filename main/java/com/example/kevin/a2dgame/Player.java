@@ -52,8 +52,6 @@ public class Player extends  GameObject {
 
     public void draw(Canvas canvas){
         canvas.drawBitmap(resized, x, y, null);
-        Log.i("x",String.valueOf(x));
-        Log.i("y",String.valueOf(y));
 
     }
     public void setImage(int x, int y){
@@ -131,8 +129,6 @@ public class Player extends  GameObject {
 
             dx = (int)( - deltx /6.2);
             dy += (int)( - delty /3.18);
-            Log.i("dx",String.valueOf(dx));
-            Log.i("dy",String.valueOf(dy));
             y += dy;
 
             //dy = 0;

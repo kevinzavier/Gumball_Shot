@@ -30,10 +30,6 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     public static int height;
     float x = -1;
     float y = -1;
-    private float lastx;
-    private float lasty;
-    public static float eventX;
-    public static float eventY;
     private boolean init;
     private boolean valid;
     private boolean won;
@@ -54,6 +50,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 
         //make GamePanel focusable so it can handle events
         setFocusable(true);
+
+
 
         //gets the height and width of the screen
         WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
@@ -89,6 +87,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
        //start the thread
         thread = new MainThread(getHolder(), this);
         bg = new Background(BitmapFactory.decodeResource(getResources(), R.drawable.blue));
+        bg.resize(width, height);
         ball = new Player(BitmapFactory.decodeResource(getResources(), R.drawable.redball), 200, 200, 1);
         goals = new ArrayList<Goal>();
         goals.add(new Goal(GamePanel.width - 500, GamePanel.height/2));
@@ -122,7 +121,6 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 
         }
         if(event.getAction()==MotionEvent.ACTION_UP){
-            Log.i("", "BRUHHHHHHHHHHHHHHHHHHHHHHHHHHH");
             if(init && valid){
 
                 ball.setTouched(true);
@@ -203,11 +201,9 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         if(canvas!=null) {
             final int savedState = canvas.save();
             //canvas.scale(scaleFactorX, scaleFactorY);
-            bg.resize(width, height);
+
             bg.draw(canvas);
             ball.draw(canvas);
-            Log.i("", "WHAT IS HAPPENING");
-            Log.i(String.valueOf(ball.getX()), String.valueOf(ball.getY()));
             //draw the ball
             goals.get(0).draw(canvas);
             dot.draw(canvas);
