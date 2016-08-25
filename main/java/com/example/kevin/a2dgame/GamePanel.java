@@ -175,6 +175,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 
         }
         if(ball.getY() > height ){
+            startTime = System.nanoTime();
             gameOver = true;
             //ball.remove();
         }
@@ -185,7 +186,15 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         }
 
     }
+
+    //happens when we win the game
     public void newGame(){
+        ball.setTouched(false);
+        ball.resetImage();
+        if(won) {
+            goals.remove(0);
+            goals.add(new Goal(GamePanel.width - 500, GamePanel.height / 2));
+        }
     }
 
     public boolean collision(GameObject a, GameObject b){

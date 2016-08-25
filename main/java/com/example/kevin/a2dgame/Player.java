@@ -59,6 +59,10 @@ public class Player extends  GameObject {
         this.y = y - 100;
 
     }
+    public void resetImage(){
+        x = 250;
+        y = GamePanel.height/2 - height/2 + 50;
+    }
     public void move(int xx, int yy){
         x = x + xx;
         y = y + yy;
