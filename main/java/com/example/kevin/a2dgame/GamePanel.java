@@ -38,6 +38,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     private boolean valid;
     private boolean won;
     private boolean gameOver;
+    private boolean getStart = true;
 
     long startTime;
     long currentTime;
@@ -54,7 +55,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         //make GamePanel focusable so it can handle events
         setFocusable(true);
 
-
+        //gets the height and width of the screen
         WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         Display display = wm.getDefaultDisplay();
         Point size = new Point();
@@ -93,7 +94,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         goals.add(new Goal(GamePanel.width - 500, GamePanel.height/2));
         //goals.add(new Goal(800,300));
         dot = new Dot(BitmapFactory.decodeResource(getResources(), R.drawable.blackdot), 100, 100, 1);
-
+        //So we dont run two threads
         thread.setRunning(true);
         if (thread.getState() == Thread.State.NEW)
         {
@@ -106,29 +107,12 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         if(event.getAction()==MotionEvent.ACTION_DOWN){
 
             if(ball.contains(event.getX(), event.getY())){
-
                 init = true;
             }
-            //x= event.getX();
-            //y = event.getY();
-            //ball.setTouched(true);
-
-            //ball.move((int)(event.getX() - lastx), (int)(event.getY() - lasty)); //move in just one
-
-            //lastx = x;
-            //lasty = y;
-            /*
-            if(!ball.getPlaying()){
-                //ball.setPlaying(true);
-            }
-            else{
-                ball.setUp(true);
-
-            }
-            */
 
         }
         if(event.getAction()==MotionEvent.ACTION_MOVE && init){
+            //and thus we can change the movement
             x= event.getX();
             y = event.getY();
             //TODO gonna change it, so user can make accidents if they lightly move it
@@ -138,50 +122,51 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 
         }
         if(event.getAction()==MotionEvent.ACTION_UP){
-            //Log.i("", "BRUHHHHHHHHHHHHHHHHHHHHHHHHHHH");
+            Log.i("", "BRUHHHHHHHHHHHHHHHHHHHHHHHHHHH");
             if(init && valid){
+
                 ball.setTouched(true);
             }
             init = false;
         }
-        /*
-        if(event.getAction()==MotionEvent.ACTION_UP){
-            //ball.setUp(false);
-            return true;
-        }
-        */
         return true;
-        //return super.onTouchEvent(event);
+
     }
 
     public void update() {
         //updates the background
         bg.update();
-        //updates the ball
+        //updates the ball, which is only doing something on setTOuched(true)
         ball.update();
 
         //this is so that we can only drag the ball once
         if(x > 0 && y > 0 && !ball.getTouched()) {
+            //moves on the drag
             ball.setImage((int) x, (int) y);
         }
+
         if(collision(goals.get(0),ball)){
             Log.i("","HAS INTERSECTED2");
 
             goals.remove(0);
             goals.add(new Goal(-100,100));
-            startTime = System.nanoTime();
             won = true;
             //goals.remove(0);
 
         }
-        if(ball.getY() > height ){
+        if(ball.getY() > height  && getStart){
+            //this is occuring all the time
             startTime = System.nanoTime();
             gameOver = true;
+            //this is so starttime will only be counted once
+            getStart = false;
             //ball.remove();
         }
         currentTime = System.nanoTime();
-        if(gameOver && (( currentTime- startTime)/1000000 < 2500)){
+        long elapsedTime = (currentTime - startTime)/1000000;
+        if(gameOver && (( elapsedTime > 1500))){
             newGame();
+            gameOver = false;
 
         }
 
@@ -190,7 +175,12 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     //happens when we win the game
     public void newGame(){
         ball.setTouched(false);
+        ball.setVelocity(true);
+        x = 350;
+        y = GamePanel.height/2 + 50;
         ball.resetImage();
+        init = false;
+        getStart = true;
         if(won) {
             goals.remove(0);
             goals.add(new Goal(GamePanel.width - 500, GamePanel.height / 2));
@@ -199,7 +189,6 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 
     public boolean collision(GameObject a, GameObject b){
         if(Rect.intersects(a.getRectangle(), b.getRectangle())){
-            Log.i("","HAS INTERSECTED1");
             return true;
         }
         return false;
@@ -217,6 +206,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
             bg.resize(width, height);
             bg.draw(canvas);
             ball.draw(canvas);
+            Log.i("", "WHAT IS HAPPENING");
+            Log.i(String.valueOf(ball.getX()), String.valueOf(ball.getY()));
             //draw the ball
             goals.get(0).draw(canvas);
             dot.draw(canvas);

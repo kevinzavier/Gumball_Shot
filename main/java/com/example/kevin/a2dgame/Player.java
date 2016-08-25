@@ -15,7 +15,7 @@ public class Player extends  GameObject {
     private double dya;
     private boolean up;
     private boolean touched;
-    private boolean playing = false;
+    private boolean playing;
     private float lastx;
     private float lasty;
     private int initX;
@@ -52,16 +52,24 @@ public class Player extends  GameObject {
 
     public void draw(Canvas canvas){
         canvas.drawBitmap(resized, x, y, null);
+        Log.i("x",String.valueOf(x));
+        Log.i("y",String.valueOf(y));
 
     }
     public void setImage(int x, int y){
         this.x = x - 100;
         this.y = y - 100;
 
+
     }
     public void resetImage(){
-        x = 250;
-        y = GamePanel.height/2 - height/2 + 50;
+        this.x = 250;
+        this.y = GamePanel.height/2 - height/2 + 50;
+        dy = 0;
+        dx = 0;
+        deltx = 0;
+        delty = 0;
+        dya = 0;
     }
     public void move(int xx, int yy){
         x = x + xx;
@@ -84,6 +92,9 @@ public class Player extends  GameObject {
     }
     public void setTouched(boolean b){
         touched = b;
+    }
+    public void setVelocity(boolean b){
+        velocity = b;
     }
     public boolean getTouched(){
         return touched;
@@ -111,20 +122,24 @@ public class Player extends  GameObject {
             if(velocity){
                 deltx = getX() - initX;
                 delty = getY() - initY;
-                Log.i("XXXXXXXXXXXXXXXXXXX", String.valueOf(deltx));
-                Log.i("YYYYYYYYYYYYYYYYYYY", String.valueOf(delty));
+                Log.i("went through velocity", String.valueOf(deltx));
+                Log.i("went through velocity", String.valueOf(delty));
 
 
                 velocity = false;
             }
+
             dx = (int)( - deltx /6.2);
             dy += (int)( - delty /3.18);
+            Log.i("dx",String.valueOf(dx));
+            Log.i("dy",String.valueOf(dy));
             y += dy;
 
             //dy = 0;
             dy = (int) (dya += 2);
             x += dx;
             y += dy;
+
 
             long elapsed = (System.nanoTime() - startTime) / 1000000;
 
