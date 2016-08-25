@@ -36,6 +36,11 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     public static float eventY;
     private boolean init;
     private boolean valid;
+    private boolean won;
+    private boolean gameOver;
+
+    long startTime;
+    long currentTime;
 
 
     public GamePanel(Context context){
@@ -44,7 +49,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         //add the callback to the surfaceholder to intercept events
         getHolder().addCallback(this);
 
-        thread = new MainThread(getHolder(), this);
+
 
         //make GamePanel focusable so it can handle events
         setFocusable(true);
@@ -72,6 +77,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
                 thread.setRunning(false);
                 thread.join();
                 retry = false;
+                thread = null;
 
             }catch(InterruptedException e){e.printStackTrace();}
 
@@ -80,6 +86,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     @Override
     public void surfaceCreated(SurfaceHolder holder){
        //start the thread
+        thread = new MainThread(getHolder(), this);
         bg = new Background(BitmapFactory.decodeResource(getResources(), R.drawable.blue));
         ball = new Player(BitmapFactory.decodeResource(getResources(), R.drawable.redball), 200, 200, 1);
         goals = new ArrayList<Goal>();
@@ -88,7 +95,10 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         dot = new Dot(BitmapFactory.decodeResource(getResources(), R.drawable.blackdot), 100, 100, 1);
 
         thread.setRunning(true);
-        thread.start();
+        if (thread.getState() == Thread.State.NEW)
+        {
+            thread.start();
+        }
     }
     @Override
     public boolean onTouchEvent(MotionEvent event){
@@ -155,19 +165,32 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
             ball.setImage((int) x, (int) y);
         }
         if(collision(goals.get(0),ball)){
-            Log.i("","HAS INTERSECTED");
+            Log.i("","HAS INTERSECTED2");
+
             goals.remove(0);
+            goals.add(new Goal(-100,100));
+            startTime = System.nanoTime();
+            won = true;
+            //goals.remove(0);
 
         }
-        if(ball.getY() > height - 50 ){
-            ball.remove();
+        if(ball.getY() > height ){
+            gameOver = true;
+            //ball.remove();
+        }
+        currentTime = System.nanoTime();
+        if(gameOver && (( currentTime- startTime)/1000000 < 2500)){
+            newGame();
+
         }
 
+    }
+    public void newGame(){
     }
 
     public boolean collision(GameObject a, GameObject b){
         if(Rect.intersects(a.getRectangle(), b.getRectangle())){
-            Log.i("","HAS INTERSECTED");
+            Log.i("","HAS INTERSECTED1");
             return true;
         }
         return false;
@@ -187,7 +210,6 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
             ball.draw(canvas);
             //draw the ball
             goals.get(0).draw(canvas);
-            Log.i("", "YESSSSSSSSSSSSSSSSSSSSSSSSSSS");
             dot.draw(canvas);
             canvas.restoreToCount(savedState);
         }

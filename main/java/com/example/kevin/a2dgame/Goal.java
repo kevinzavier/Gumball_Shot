@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.PorterDuff;
 
 /**
  * Created by kevin on 8/19/16.
@@ -37,6 +38,10 @@ public class Goal extends GameObject{
         canvas.drawCircle(x -r, y-r, r, paint);
 
     }
+    public void remove(Canvas canvas){
+        canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
+    }
+
 
 
 }
