@@ -1,24 +1,29 @@
 package com.example.kevin.a2dgame;
 
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 
 /**
- * Created by kevin on 8/19/16.
+ * Created by kevin on 8/25/16.
  */
-public class Goal extends GameObject{
+public class Line extends  GameObject {
     public int r;
     private int score;
     private double dya;
     private boolean up;
     private boolean playing = false;
-    public Goal(int x,int y){
+    float startx;
+    float starty;
+    float endx;
+    float endy;
+    public Line(float x, float y, float xx, float yy){
         r = 35;
-        this.x = x;
-        this.y = y;
+        startx = x;
+        starty = y;
+        endx = xx;
+        endy = yy;
         dy = 0;
         score = 0;
         width = 80;
@@ -29,17 +34,15 @@ public class Goal extends GameObject{
     }
     public void draw(Canvas canvas){
         Paint paint = new Paint();
-        paint.setColor(Color.GRAY);
-        paint.setStyle(Paint.Style.FILL);
-        canvas.drawCircle(x -r , y-r, r + 15, paint);
         paint.setColor(Color.BLACK);
-        canvas.drawCircle(x -r, y-r, r, paint);
+        paint.setAntiAlias(true);
+        paint.setStrokeJoin(Paint.Join.ROUND);
+        canvas.drawLine(startx, starty, endx, endy, paint);
 
     }
     public void remove(Canvas canvas){
         canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
     }
-
 
 
 }
