@@ -25,6 +25,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     private Background bg;
     private Player ball;
     private ArrayList<Goal> goals;
+    private ArrayList<Line> lines;
     private Dot dot;
     public static int width;
     public static int height;
@@ -90,8 +91,10 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         bg.resize(width, height);
         ball = new Player(BitmapFactory.decodeResource(getResources(), R.drawable.redball), 200, 200, 1);
         goals = new ArrayList<Goal>();
+        lines = new ArrayList<Line>();
+        lines.add(new Line(350f, height/2 + 50));
         goals.add(new Goal(GamePanel.width - 500, GamePanel.height/2));
-        //goals.add(new Goal(800,300));
+        //goals.add(new Goal(800,300))
         dot = new Dot(BitmapFactory.decodeResource(getResources(), R.drawable.blackdot), 100, 100, 1);
         //So we dont run two threads
         thread.setRunning(true);
@@ -112,8 +115,13 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         }
         if(event.getAction()==MotionEvent.ACTION_MOVE && init){
             //and thus we can change the movement
+
+
             x= event.getX();
             y = event.getY();
+            lines.remove(0);;
+            lines.add(new Line(event.getX(), event.getY()));
+
             //TODO gonna change it, so user can make accidents if they lightly move it
             valid = true;
 
@@ -162,7 +170,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         }
         currentTime = System.nanoTime();
         long elapsedTime = (currentTime - startTime)/1000000;
-        if(gameOver && (( elapsedTime > 1500))){
+        if(gameOver && (( elapsedTime > 1200))){
             newGame();
             gameOver = false;
 
@@ -207,6 +215,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
             //draw the ball
             goals.get(0).draw(canvas);
             dot.draw(canvas);
+            lines.get(0).draw(canvas);
             canvas.restoreToCount(savedState);
         }
     }

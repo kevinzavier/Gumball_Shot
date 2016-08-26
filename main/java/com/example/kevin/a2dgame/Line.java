@@ -18,10 +18,11 @@ public class Line extends  GameObject {
     float starty;
     float endx;
     float endy;
-    public Line(float x, float y, float xx, float yy){
+    public Line(float xx, float yy){
         r = 35;
-        startx = x;
-        starty = y;
+        startx = (float) 350;
+        //100 is to account for the half
+        starty = (float)(GamePanel.height/2 + 50);
         endx = xx;
         endy = yy;
         dy = 0;
@@ -37,11 +38,9 @@ public class Line extends  GameObject {
         paint.setColor(Color.BLACK);
         paint.setAntiAlias(true);
         paint.setStrokeJoin(Paint.Join.ROUND);
+        paint.setStrokeWidth(10f);
         canvas.drawLine(startx, starty, endx, endy, paint);
 
-    }
-    public void remove(Canvas canvas){
-        canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
     }
 
 
