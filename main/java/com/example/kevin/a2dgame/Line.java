@@ -35,7 +35,7 @@ public class Line extends  GameObject {
     }
     public void draw(Canvas canvas){
         Paint paint = new Paint();
-        paint.setColor(Color.BLACK);
+        paint.setColor(Color.LTGRAY);
         paint.setAntiAlias(true);
         paint.setStrokeJoin(Paint.Join.ROUND);
         paint.setStrokeWidth(10f);

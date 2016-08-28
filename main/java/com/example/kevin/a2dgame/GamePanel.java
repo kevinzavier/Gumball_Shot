@@ -3,8 +3,11 @@ package com.example.kevin.a2dgame;
 import android.content.Context;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.graphics.Typeface;
 import android.util.Log;
 import android.view.Display;
 import android.view.MotionEvent;
@@ -31,11 +34,14 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     public static int height;
     float x = -1;
     float y = -1;
+    private boolean newGame = true;
     private boolean init;
     private boolean valid;
     private boolean won;
     private boolean gameOver;
     private boolean getStart = true;
+    private int score = 0;
+    private int best = 0;
 
     long startTime;
     long currentTime;
@@ -107,6 +113,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     public boolean onTouchEvent(MotionEvent event){
 
         if(event.getAction()==MotionEvent.ACTION_DOWN){
+            newGame = false;
 
             if(ball.contains(event.getX(), event.getY())){
                 init = true;
@@ -152,8 +159,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         }
 
         if(collision(goals.get(0),ball)){
-            Log.i("","HAS INTERSECTED2");
-
+            score += 10;
             goals.remove(0);
             goals.add(new Goal(-100,100));
             won = true;
@@ -187,9 +193,14 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         ball.resetImage();
         init = false;
         getStart = true;
+
         if(won) {
+
             goals.remove(0);
             goals.add(new Goal(GamePanel.width - 500, GamePanel.height / 2));
+            if(score > best){
+                best = score;
+            }
         }
     }
 
@@ -217,6 +228,24 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
             dot.draw(canvas);
             lines.get(0).draw(canvas);
             canvas.restoreToCount(savedState);
+
+            drawText(canvas);
+        }
+    }
+    public void drawText(Canvas canvas){
+        Paint paint = new Paint();
+        paint.setColor(Color.BLACK);
+        paint.setTextSize(60);
+        paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
+        canvas.drawText("SCORE: "  + score, 10, height - 100, paint);
+        canvas.drawText("BEST: " + best, width - 215, height -100, paint);
+
+        if(newGame){
+            Paint paint1 = new Paint();
+            paint1.setTextSize(80);
+            paint1.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
+            canvas.drawText("DRAG THE BALL AND HIT THE TARGET", width/2 - 750, 100, paint1);
+
         }
     }
 }
