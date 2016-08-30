@@ -42,6 +42,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     private boolean getStart = true;
     private int score = 0;
     private int best = 0;
+    public final int OFFSET = 70;
 
     long startTime;
     long currentTime;
@@ -151,7 +152,19 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         bg.update();
         //updates the ball, which is only doing something on setTOuched(true)
         ball.update();
-        goals.get(0).update();
+        goals.get(0).setVertical(false);
+        if(score >= 50) {
+            goals.get(0).setVertical(true);
+            goals.get(0).update();
+        }
+        else if(score >= 30) {
+            goals.get(0).update();
+        }
+        else{
+
+        }
+
+
 
         //this is so that we can only drag the ball once
         if(x > 0 && y > 0 && !ball.getTouched()) {
@@ -201,7 +214,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         won = false;
         ball.setTouched(false);
         ball.setVelocity(true);
-        x = 350;
+        x = 350 + OFFSET;
         y = GamePanel.height/2 + 50;
         ball.resetImage();
         init = false;
@@ -228,11 +241,12 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
             //canvas.scale(scaleFactorX, scaleFactorY);
 
             bg.draw(canvas);
+            lines.get(0).draw(canvas);
             ball.draw(canvas);
             //draw the ball
             goals.get(0).draw(canvas);
             dot.draw(canvas);
-            lines.get(0).draw(canvas);
+
             canvas.restoreToCount(savedState);
 
             drawText(canvas);

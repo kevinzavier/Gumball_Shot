@@ -23,6 +23,7 @@ public class Player extends  GameObject {
     private int deltx;
     private int delty;
     boolean velocity = true;
+    public final int OFFSET = 70;
     //private Animation animation = new Animation();
     private long startTime;
 
@@ -33,7 +34,9 @@ public class Player extends  GameObject {
         width = w;
         numFrames = 0;
         image = res;
-        x = 250;
+        //can change the x value
+        x = 250 + OFFSET;
+        //to get a little above the middle
         y = GamePanel.height/2 - height/2 + 50;
         initX = x;
         initY = y;
@@ -61,7 +64,7 @@ public class Player extends  GameObject {
 
     }
     public void resetImage(){
-        this.x = 250;
+        this.x = 250 + OFFSET;
         this.y = GamePanel.height/2 - height/2 + 50;
         dy = 0;
         dx = 0;

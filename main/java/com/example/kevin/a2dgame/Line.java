@@ -18,9 +18,11 @@ public class Line extends  GameObject {
     float starty;
     float endx;
     float endy;
+    public final int OFFSET = 70;
+
     public Line(float xx, float yy){
         r = 35;
-        startx = (float) 350;
+        startx = (float) 350 + OFFSET;
         //100 is to account for the half
         starty = (float)(GamePanel.height/2 + 50);
         endx = xx;

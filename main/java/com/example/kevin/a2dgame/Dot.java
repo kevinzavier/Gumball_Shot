@@ -13,6 +13,7 @@ public class Dot extends GameObject{
     private double dya;
     private boolean up;
     private boolean playing = false;
+    private final int OFFSET = 70;
 
 
     public Dot(Bitmap res, int w, int h, int numFrames){
@@ -22,7 +23,7 @@ public class Dot extends GameObject{
         width = w;
         numFrames = 0;
         image = res;
-        x = 325;
+        x = 250 + 75 + OFFSET;
         y = GamePanel.height/2 - height + 100 + 25;
         resized = Bitmap.createScaledBitmap(image, 50, 50, true);
     }

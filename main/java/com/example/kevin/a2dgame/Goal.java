@@ -16,8 +16,9 @@ public class Goal extends GameObject{
     private boolean up;
     private boolean playing = false;
     private int speed = 5;
-    private boolean direction;
+    private boolean horizontal;
     private int count = 0;
+    private boolean vertical;
     public Goal(int x,int y){
         r = 35;
         this.x = x;
@@ -39,23 +40,43 @@ public class Goal extends GameObject{
         canvas.drawCircle(x -r, y-r, r, paint);
 
     }
+    public void setVertical(boolean b){
+        vertical = b;
+    }
     public void remove(Canvas canvas){
         canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
     }
     public void update(){
         //this is to change the speed of the target
-        if(direction) {
+        if(horizontal) {
             x += speed;
+            if(vertical){
+                if(count > 25){
+                    y+=speed;
+                }
+                else{
+                    y-=speed;
+                }
+
+            }
             count++;
             if(count==50){
-                direction = false;
+                horizontal = false;
             }
         }
         else{
             x-=speed;
+            if(vertical){
+                if(count < -25){
+                    y-=speed;
+                }
+                else{
+                    y+=speed;
+                }
+            }
             count--;
             if(count==-50){
-                direction = true;
+                horizontal = true;
             }
         }
 
