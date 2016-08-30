@@ -15,6 +15,9 @@ public class Goal extends GameObject{
     private double dya;
     private boolean up;
     private boolean playing = false;
+    private int speed = 5;
+    private boolean direction;
+    private int count = 0;
     public Goal(int x,int y){
         r = 35;
         this.x = x;
@@ -38,6 +41,24 @@ public class Goal extends GameObject{
     }
     public void remove(Canvas canvas){
         canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
+    }
+    public void update(){
+        //this is to change the speed of the target
+        if(direction) {
+            x += speed;
+            count++;
+            if(count==50){
+                direction = false;
+            }
+        }
+        else{
+            x-=speed;
+            count--;
+            if(count==-50){
+                direction = true;
+            }
+        }
+
     }
 
 

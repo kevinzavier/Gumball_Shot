@@ -13,6 +13,8 @@ public class Dot extends GameObject{
     private double dya;
     private boolean up;
     private boolean playing = false;
+
+
     public Dot(Bitmap res, int w, int h, int numFrames){
         dy = 0;
         score = 0;

@@ -151,6 +151,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         bg.update();
         //updates the ball, which is only doing something on setTOuched(true)
         ball.update();
+        goals.get(0).update();
 
         //this is so that we can only drag the ball once
         if(x > 0 && y > 0 && !ball.getTouched()) {
@@ -186,14 +187,6 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 
     //happens when we win the game
     public void newGame(){
-        ball.setTouched(false);
-        ball.setVelocity(true);
-        x = 350;
-        y = GamePanel.height/2 + 50;
-        ball.resetImage();
-        init = false;
-        getStart = true;
-
         if(won) {
 
             goals.remove(0);
@@ -202,6 +195,19 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
                 best = score;
             }
         }
+        else{
+            score = 0;
+        }
+        won = false;
+        ball.setTouched(false);
+        ball.setVelocity(true);
+        x = 350;
+        y = GamePanel.height/2 + 50;
+        ball.resetImage();
+        init = false;
+        getStart = true;
+
+
     }
 
     public boolean collision(GameObject a, GameObject b){
@@ -238,7 +244,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         paint.setTextSize(60);
         paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
         canvas.drawText("SCORE: "  + score, 10, height - 100, paint);
-        canvas.drawText("BEST: " + best, width - 215, height -100, paint);
+        canvas.drawText("BEST: " + best, width - 305, height -100, paint);
 
         if(newGame){
             Paint paint1 = new Paint();
