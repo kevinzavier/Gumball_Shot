@@ -1,6 +1,7 @@
 package com.example.kevin.a2dgame;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -103,6 +104,13 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         goals.add(new Goal(GamePanel.width - 500, GamePanel.height/2));
         //goals.add(new Goal(800,300))
         dot = new Dot(BitmapFactory.decodeResource(getResources(), R.drawable.blackdot), 100, 100, 1);
+
+
+        //get the high score
+        SharedPreferences sharedPref = getContext().getSharedPreferences("userInfo", Context.MODE_PRIVATE);
+        best = sharedPref.getInt("high_score", best);
+
+
         //So we dont run two threads
         thread.setRunning(true);
         if (thread.getState() == Thread.State.NEW)
@@ -110,6 +118,9 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
             thread.start();
         }
     }
+
+
+
     @Override
     public boolean onTouchEvent(MotionEvent event){
 
@@ -130,7 +141,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
             lines.remove(0);;
             lines.add(new Line(event.getX(), event.getY()));
 
-            //TODO gonna change it, so user can make accidents if they lightly move it
+            //TODO make it so you cant drag it to the goal
             valid = true;
 
 
@@ -206,6 +217,10 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
             goals.add(new Goal(GamePanel.width - 500, GamePanel.height / 2));
             if(score > best){
                 best = score;
+                SharedPreferences sharedPref = getContext().getSharedPreferences("userInfo", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPref.edit();
+                editor.putInt("high_score", best);
+                editor.apply();
             }
         }
         else{
