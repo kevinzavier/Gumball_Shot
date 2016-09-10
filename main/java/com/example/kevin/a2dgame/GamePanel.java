@@ -139,7 +139,17 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
             x= event.getX();
             y = event.getY();
             lines.remove(0);;
-            lines.add(new Line(event.getX(), event.getY()));
+            lines.add(new Line(x, y));
+            if(x> (width/2 + 200)){
+                x = 350 + OFFSET;
+                y = GamePanel.height/2 + 50;
+                ball.resetImage();
+                lines.remove(0);;
+                lines.add(new Line(x, y));
+                init = false;
+            }
+            Log.i("X", String.valueOf(x));
+            Log.i("Width", String.valueOf(width));
 
             valid = true;
 
