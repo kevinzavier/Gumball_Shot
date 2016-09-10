@@ -148,7 +148,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
                 lines.add(new Line(x, y));
                 init = false;
             }
-            int x = 0;
+            
             Log.i("X", String.valueOf(x));
             Log.i("Width", String.valueOf(width));
 
