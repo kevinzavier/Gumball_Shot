@@ -93,9 +93,9 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     }
     @Override
     public void surfaceCreated(SurfaceHolder holder){
-       //start the thread
+        //start the thread
         thread = new MainThread(getHolder(), this);
-        bg = new Background(BitmapFactory.decodeResource(getResources(), R.drawable.blue));
+        bg = new Background(BitmapFactory.decodeResource(getResources(), R.drawable.background));
         bg.resize(width, height);
         ball = new Player(BitmapFactory.decodeResource(getResources(), R.drawable.redball), 200, 200, 1);
         goals = new ArrayList<Goal>();
@@ -141,7 +141,6 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
             lines.remove(0);;
             lines.add(new Line(event.getX(), event.getY()));
 
-            //TODO make it so you cant drag it to the goal
             valid = true;
 
 
