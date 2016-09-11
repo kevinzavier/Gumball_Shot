@@ -244,6 +244,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         ball.resetImage();
         init = false;
         getStart = true;
+        ball.changeColor(BitmapFactory.decodeResource(getResources(), R.drawable.pink));
 
 
     }
@@ -267,10 +268,11 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 
             bg.draw(canvas);
             lines.get(0).draw(canvas);
+            dot.draw(canvas);
             ball.draw(canvas);
             //draw the ball
             goals.get(0).draw(canvas);
-            dot.draw(canvas);
+
 
             canvas.restoreToCount(savedState);
 
