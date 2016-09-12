@@ -51,7 +51,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     private int best = 0;
     public final int OFFSET = 70;
 
-    int[] ballColors = {R.drawable.cobalt, R.drawable.black, R.drawable.cobalt};
+    int[] ballColors = {R.drawable.black, R.drawable.blue, R.drawable.brown, R.drawable.cobalt, R.drawable.green, R.drawable.mustard,
+            R.drawable.orange, R.drawable.pink, R.drawable.purple, R.drawable.redball, R.drawable.sage, R.drawable.yellow_ball,};
 
     long startTime;
     long currentTime;
@@ -186,6 +187,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         if(event.getAction()==MotionEvent.ACTION_UP){
             upX = event.getX();
             upY = event.getY();
+            int length;
             if(init && valid){
 
                 ball.setTouched(true);
@@ -193,16 +195,20 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 
 
             if(myColors.contains(upX, upY) && colors){
-                ball.setColor(BitmapFactory.decodeResource(getResources(), R.drawable.cobalt));
+                int ballcolorIndex = (int)(Math.random() * ballColors.length);
+                ball.setColor(BitmapFactory.decodeResource(getResources(), ballColors[ballcolorIndex]));
             }
             else if(myMusic.contains(upX, upY) && music){
 
                 if(MainActivity.musicPaused){
+                    myMusic.setImage(BitmapFactory.decodeResource(getResources(), R.drawable.music_note));
                     MainActivity.backgroundMusic.start();
                     MainActivity.musicPaused = false;
                 }
                 else {
-                    MainActivity.backgroundMusic.release();
+                    myMusic.setImage(BitmapFactory.decodeResource(getResources(), R.drawable.music_note_2));
+                    MainActivity.backgroundMusic.pause();
+                    length=MainActivity.backgroundMusic.getCurrentPosition();
                     MainActivity.musicPaused = true;
                 }
             }
@@ -295,7 +301,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         ball.resetImage();
         init = false;
         getStart = true;
-        ball.setColor(BitmapFactory.decodeResource(getResources(), R.drawable.pink));
+
 
 
     }

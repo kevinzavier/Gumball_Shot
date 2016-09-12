@@ -27,7 +27,7 @@ public class Music extends  GameObject{
         y = 80;
         resized = Bitmap.createScaledBitmap(image, 120, 120, true);
     }
-    public void change(Bitmap res){
+    public void setImage(Bitmap res){
         image = res;
         resized = Bitmap.createScaledBitmap(image, 120, 120, true);
     }
