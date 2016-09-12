@@ -35,6 +35,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     private Dot dot;
     public static int width;
     public static int height;
+    private int length;
     float x = -1;
     float y = -1;
     private boolean newGame = true;
@@ -52,7 +53,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     public final int OFFSET = 70;
 
     int[] ballColors = {R.drawable.black, R.drawable.blue, R.drawable.brown, R.drawable.cobalt, R.drawable.green, R.drawable.mustard,
-            R.drawable.orange, R.drawable.pink, R.drawable.purple, R.drawable.redball, R.drawable.sage, R.drawable.yellow_ball,};
+            R.drawable.orange, R.drawable.pink, R.drawable.purple, R.drawable.redball, R.drawable.sage};
 
     long startTime;
     long currentTime;
@@ -187,7 +188,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         if(event.getAction()==MotionEvent.ACTION_UP){
             upX = event.getX();
             upY = event.getY();
-            int length;
+
             if(init && valid){
 
                 ball.setTouched(true);
@@ -202,6 +203,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 
                 if(MainActivity.musicPaused){
                     myMusic.setImage(BitmapFactory.decodeResource(getResources(), R.drawable.music_note));
+                    MainActivity.backgroundMusic.seekTo(length);
                     MainActivity.backgroundMusic.start();
                     MainActivity.musicPaused = false;
                 }
