@@ -11,14 +11,18 @@ import android.view.Window;
 import android.view.WindowManager;
 
 public class MainActivity extends Activity {
-    MediaPlayer backgroundMusic;
+    public static MediaPlayer backgroundMusic;
+    public static boolean musicPaused;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         backgroundMusic = MediaPlayer.create(MainActivity.this, R.raw.background_music);
         backgroundMusic.setLooping(true);
-        backgroundMusic.start();
+
+        if(!musicPaused) {
+            backgroundMusic.start();
+        }
 
 
         //turn title off

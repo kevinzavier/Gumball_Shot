@@ -77,7 +77,7 @@ public class Player extends  GameObject {
         y = y + yy;
     }
 
-    public void changeColor(Bitmap res){
+    public void setColor(Bitmap res){
         image = res;
         resized = Bitmap.createScaledBitmap(image, 200, 200, true);
     }

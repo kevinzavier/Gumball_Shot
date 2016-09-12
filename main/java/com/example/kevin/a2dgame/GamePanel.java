@@ -28,6 +28,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     private MainThread thread;
     private Background bg;
     private Player ball;
+    private Music myMusic;
+    private Color_Changer myColors;
     private ArrayList<Goal> goals;
     private ArrayList<Line> lines;
     private Dot dot;
@@ -41,9 +43,15 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     private boolean won;
     private boolean gameOver;
     private boolean getStart = true;
+    //for the color button (if touched)
+    private boolean colors;
+    //for the music button (if touched)
+    private boolean music;
     private int score = 0;
     private int best = 0;
     public final int OFFSET = 70;
+
+    int[] ballColors = {R.drawable.cobalt, R.drawable.black, R.drawable.cobalt};
 
     long startTime;
     long currentTime;
@@ -98,6 +106,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         bg = new Background(BitmapFactory.decodeResource(getResources(), R.drawable.background));
         bg.resize(width, height);
         ball = new Player(BitmapFactory.decodeResource(getResources(), R.drawable.redball), 200, 200, 1);
+        myMusic = new Music(BitmapFactory.decodeResource(getResources(), R.drawable.music_note), 80, 80);
+        myColors = new Color_Changer(BitmapFactory.decodeResource(getResources(), R.drawable.colorfilters), 80, 80);
         goals = new ArrayList<Goal>();
         lines = new ArrayList<Line>();
         lines.add(new Line(350f, height/2 + 50));
@@ -123,12 +133,28 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 
     @Override
     public boolean onTouchEvent(MotionEvent event){
+        float downX;
+        float downY;
+        float upX;
+        float upY;
 
         if(event.getAction()==MotionEvent.ACTION_DOWN){
             newGame = false;
+            downX = event.getX();
+            downY = event.getY();
 
-            if(ball.contains(event.getX(), event.getY())){
+
+            if(ball.contains(downX, downY)){
                 init = true;
+            }
+            else if(myColors.contains(downX, downY)){
+                colors = true;
+            }
+            else if(myMusic.contains(downX, downY)){
+                music = true;
+            }
+            else{
+
             }
 
         }
@@ -158,11 +184,36 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 
         }
         if(event.getAction()==MotionEvent.ACTION_UP){
+            upX = event.getX();
+            upY = event.getY();
             if(init && valid){
 
                 ball.setTouched(true);
             }
+
+
+            if(myColors.contains(upX, upY) && colors){
+                ball.setColor(BitmapFactory.decodeResource(getResources(), R.drawable.cobalt));
+            }
+            else if(myMusic.contains(upX, upY) && music){
+
+                if(MainActivity.musicPaused){
+                    MainActivity.backgroundMusic.start();
+                    MainActivity.musicPaused = false;
+                }
+                else {
+                    MainActivity.backgroundMusic.release();
+                    MainActivity.musicPaused = true;
+                }
+            }
+            else{
+
+            }
+
             init = false;
+            colors = false;
+            music = false;
+
         }
         return true;
 
@@ -244,7 +295,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         ball.resetImage();
         init = false;
         getStart = true;
-        ball.changeColor(BitmapFactory.decodeResource(getResources(), R.drawable.pink));
+        ball.setColor(BitmapFactory.decodeResource(getResources(), R.drawable.pink));
 
 
     }
@@ -272,6 +323,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
             ball.draw(canvas);
             //draw the ball
             goals.get(0).draw(canvas);
+            myMusic.draw(canvas);
+            myColors.draw(canvas);
 
 
             canvas.restoreToCount(savedState);
